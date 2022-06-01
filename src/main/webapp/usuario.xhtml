@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+				   xmlns:f="http://xmlns.jcp.org/jsf/core"
+				   xmlns:h="http://xmlns.jcp.org/jsf/html"
+				   xmlns:jsf="http://xmlns.jcp.org/jsf"
+				   xmlns:ui="http://java.sun.com/jsf/facelets">
+				   
+<ui:composition template="/template.xhtml">
+<ui:define name="conteudo">
+<h:head>
+
+	<title>Cadastro de Usuario</title>
+</h:head>
+<h:body>
+	<h:form id="formPrincipal">
+		<h:messages id="messages"
+			globalOnly="true"  
+			infoStyle="color:green;"  
+			warnStyle="color:yellow;"  
+			errorStyle="color:red;" />
+		<h:panelGrid id="pgPrincipal" columns="2" >
+		
+		<f:facet name="header">
+				<h:panelGrid columns="2">
+				<h:commandButton type="button" class="btn btn-secondary"
+					value="Voltar" 
+					actionListener="#{roupa2Controller.voltar}">
+					<f:ajax execute="@this" />
+				</h:commandButton>
+				</h:panelGrid>
+			</f:facet>
+		
+
+		
+			<h:outputLabel value="Nome: " />
+			<h:inputText id="itNome" value="#{usuarioController.usuario.nome}" />
+
+			<h:outputLabel value="Login:" />
+			<h:inputText value="#{usuarioController.usuario.login}"/>
+			
+			<h:outputLabel value="Senha:" />
+			<h:inputSecret value="#{usuarioController.usuario.senha}"/>
+			
+			<h:outputLabel value="Data de Nascimento:" />
+			<h:panelGroup>
+				<input  
+					jsf:id="data" 
+					type="date" 
+					jsf:value="#{usuarioController.usuario.dataNascimento}">
+					<f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+				</input>
+				<h:message for="data" style="color:red"/>
+			</h:panelGroup>
+			
+			<h:outputLabel value="Perfil:" />
+			<h:selectOneMenu value="#{usuarioController.usuario.perfil}">
+				<f:selectItem 
+					itemLabel="Selecione um Perfil ..."/>
+				<f:selectItems 
+					var="obj" 
+					value="#{usuarioController.listaPerfil}" 
+					itemLabel="#{obj.label}"
+					itemValue="#{obj}"/>
+			</h:selectOneMenu>
+			
+		</h:panelGrid>
+		<h:commandButton 
+			value="Incluir" type="button" class="btn btn-outline-success"
+			actionListener="#{usuarioController.incluir}"
+			disabled="#{usuarioController.usuario.id!=null}">
+			<f:ajax execute="formPrincipal" render="messages pgPrincipal dataTable" />
+		</h:commandButton>
+			
+		<h:commandButton 
+			value="Alterar" type="button" class="btn btn-outline-warning"
+			actionListener="#{usuarioController.alterar}"
+			disabled="#{usuarioController.usuario.id==null}">
+			<f:ajax execute="formPrincipal" render="@form" />
+		</h:commandButton>
+		
+		<h:commandButton type="button" class="btn btn-outline-danger"
+			value="Excluir" 
+			actionListener="#{usuarioController.excluir}"
+			disabled="#{usuarioController.usuario.id==null}">
+			<f:ajax  render="formPrincipal" />
+		</h:commandButton>
+			
+		<h:commandButton 
+			value="Limpar" type="button" class="btn btn-outline-dark"
+			actionListener="#{usuarioController.limpar}">
+			<f:ajax  render="@all" />
+		</h:commandButton>
+
+
+         <table class="table table-bordered">
+		<h:dataTable 
+			id="dataTable"
+			value="#{usuarioController.listaUsuario}"
+			var="obj">
+			<h:column>
+				<f:facet name="header">Id</f:facet>
+				<h:outputLabel value="#{obj.id}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputLabel value="#{obj.nome}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Login</f:facet>
+				<h:outputLabel value="#{obj.login}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Senha</f:facet>
+				<h:outputLabel value="******"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Data Nascimento</f:facet>
+				<h:outputLabel value="#{obj.dataNascimento}">
+					<f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+				</h:outputLabel>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Perfil</f:facet>
+				<h:outputLabel value="#{obj.perfil.label}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Ação</f:facet>
+				<h:commandButton value="Editar" type="button" class="btn btn-primary" actionListener="#{usuarioController.editar(obj.id)}">
+					<f:ajax execute="@this" render="@form" />
+				</h:commandButton>
+				<h:commandButton value="Excluir" type="button" class="btn btn-danger" actionListener="#{usuarioController.excluir(obj.id)}">
+					<f:ajax execute="@this" render="@form" />
+				</h:commandButton>
+			</h:column>
+		
+		</h:dataTable>
+		</table>
+	</h:form>
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

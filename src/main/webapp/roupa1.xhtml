@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+<ui:composition template="/template.xhtml">
+<ui:define name="conteudo">
+	<h:form >
+
+	<h:messages 
+		errorStyle="color:red" 
+		warnStyle="color:orange" 
+		infoStyle="color:green"
+		globalOnly="false"/>
+		
+	<!-- Container -->
+	<div class="container-fluid">
+		<div class="row justify-content-md-center">
+			<div class="col-md-6 col-md-auto login-box">		
+	 			<h:messages styleClass="alert alert-danger hmessages"  />
+				<div class="form-row">
+				 	<div class="form-group col-md-10">
+				 		<h1 class="text-center wdi-red">Consulta de Roupas</h1>
+				    </div>
+				    <div class="form-group col-md-2">
+					    	<h:commandButton value="+ Roupa"
+						     	class="btn btn-success"
+								action="#{roupa1Controller.novo}" />
+				    </div>
+				</div>		
+				
+				<hr />
+					<div class="form-row">
+					 	<div class="form-group col-md-2">
+							<h:outputLabel value="Nome: " />
+					    </div>
+					    <div class="form-group col-md-8">
+					     	<input type="text" class="form-control" 
+					     		placeholder="Informe o filtro ..."
+								jsf:value="#{roupa1Controller.filtro}" />
+					    </div>
+					    
+					    <div class="form-group col-md-2">
+					      <h:commandButton value="Pesquisar"
+					     		class="btn btn-primary"
+								actionListener="#{roupa1Controller.pesquisar}" />
+					    </div>
+					    
+						
+					</div>
+					<h:dataTable 
+						id="dataTable"
+						width="100%"
+						value="#{roupa1Controller.listaRoupa}"
+						var="obj"
+						styleClass="table"
+						headerClass="table-header"
+						rowClasses="table-odd-row,table-even-row">
+						<h:column>
+							<f:facet name="header">Peça</f:facet>
+							<h:outputLabel value="#{obj.peca}" />
+						</h:column>		
+						<h:column>
+							<f:facet name="header">Marca</f:facet>
+							<h:outputLabel value="#{obj.marca.nome}" />
+						</h:column>	
+						<h:column>
+							<f:facet name="header">Tamanho</f:facet>
+							<h:outputLabel value="#{obj.tamanho}" />
+						</h:column>	
+						<h:column>
+							<f:facet name="header">Cor</f:facet>
+							<h:outputLabel value="#{obj.cor}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Preço</f:facet>
+							<h:outputLabel value="#{obj.preco}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Estoque</f:facet>
+							<h:outputLabel value="#{obj.estoque}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Data de Recebimento</f:facet>
+							<h:outputLabel value="#{obj.data_Recebimento}" />
+						</h:column>
+						
+							
+						<h:column>
+							<f:facet name="header">Ação</f:facet>
+							<h:commandButton value="Editar"
+								class="btn btn-primary"
+								action="#{roupa1Controller.editar(obj.id)}">
+								<f:ajax execute="@this" render="@form"/>
+							</h:commandButton>
+						</h:column>	
+					
+					</h:dataTable>
+			</div>
+		</div>
+	</div>
+
+	</h:form>
+
+</ui:define>
+</ui:composition>
+</html>
