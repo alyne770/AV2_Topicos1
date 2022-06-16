@@ -2,10 +2,8 @@ package br.unitins.av2.model;
 
 
 public enum Perfil {
-	ADMINSTRADOR(1, "Administrador"), 
-	FUNCIONARIO(2, "Funcionario"), 
-	GERENTE(3, "Gerente"), 
-	CLIENTE(4, "Cliente");
+	ADMINISTRADOR(1, "Administrador"),  
+	CLIENTE(2, "Cliente");
 	
 	private int id;
 	private String label;

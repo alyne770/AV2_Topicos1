@@ -25,7 +25,7 @@
 					</div>
 					<div class="mb-3">
 						<h:outputLabel value="Data da Venda: " styleClass="control-label" />
-						<h:outputText value=" #{detalheVendaController.venda.data}" styleClass="control-label" >
+						<h:outputText value=" #{detalheVendaController.venda.dataVenda}" styleClass="control-label" >
 							<f:convertDateTime type="localDate" pattern="dd-MM-yyyy"/>
 						</h:outputText>
 					</div>
@@ -42,8 +42,8 @@
 						<h:outputLabel value="Itens vendidos: " styleClass="control-label" />
 						<h:dataTable value="#{detalheVendaController.venda.listaItemVenda}" var="obj" styleClass="table table-striped table-hover">>
 							<h:column>
-								<f:facet name="header">Nome</f:facet>
-								<h:outputLabel value="#{obj.produto.nome}" />
+								<f:facet name="header">Peça</f:facet>
+								<h:outputLabel value="#{obj.peca}" />
 							</h:column>
 							
 							<h:column>

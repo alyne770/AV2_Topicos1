@@ -286,6 +286,8 @@ public class UsuarioDAO implements DAO<Usuario>{
 		}
 		return usuario;
 	}
+	
+	
 
 	public Usuario verificarLogin(String login, String senha) {
 		Connection conn = DAO.getConnection();
@@ -343,6 +345,64 @@ public class UsuarioDAO implements DAO<Usuario>{
 			e.printStackTrace();
 		}
 		return usuario;
+	}
+	
+	public List<Usuario> getByNome(String nome) {
+		Connection conn = DAO.getConnection();
+		if (conn == null) {
+			return null;
+		}
+
+		List<Usuario> lista = new ArrayList<Usuario>();
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT ");
+		sql.append("  u.id, ");
+		sql.append("  u.nome, ");
+		sql.append("  u.login, ");
+		sql.append("  u.senha, ");
+		sql.append("  u.perfil ");
+		sql.append("FROM ");
+		sql.append("  usuario u ");
+		sql.append("WHERE ");
+		sql.append("  u.nome iLIKE ? ");
+		sql.append("ORDER BY ");
+		sql.append("  u.nome ");
+
+		ResultSet rs = null;
+		PreparedStatement stat = null;
+		try {
+			stat = conn.prepareStatement(sql.toString());
+			stat.setString(1, "%" + nome + "%");
+			
+			rs = stat.executeQuery();
+			while  (rs.next()) {
+				Usuario usuario = new Usuario();
+				usuario.setId(rs.getInt("id"));
+				usuario.setNome(rs.getString("nome"));
+				usuario.setLogin(rs.getString("login"));
+				usuario.setSenha(rs.getString("senha"));
+				usuario.setPerfil(Perfil.valueOf(rs.getInt("perfil")));
+		
+				lista.add(usuario);
+		}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			lista = null;
+		}
+
+		try {
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lista;
 	}
 
 }

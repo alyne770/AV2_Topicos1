@@ -8,6 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 import br.unitins.av2.application.Util;
+import br.unitins.av2.dao.RoupaDAO;
 import br.unitins.av2.dao.UsuarioDAO;
 import br.unitins.av2.model.Perfil;
 import br.unitins.av2.model.Usuario;
@@ -19,8 +20,13 @@ import br.unitins.av2.model.Usuario;
 public class UsuarioController implements Serializable {
 	
 	private static final long serialVersionUID = -2950021283257698121L;
+	private String filtro;
 	private Usuario usuario;
 	private List<Usuario> listaUsuario;
+	
+	public void voltar() {
+		Util.redirect("usuarioconsulta.xhtml");
+	}
 
 	public void incluir() {
 		UsuarioDAO dao = new UsuarioDAO();
@@ -79,6 +85,11 @@ public class UsuarioController implements Serializable {
 		usuario = null;
 	}
 	
+	public void pesquisar() {
+		UsuarioDAO dao = new UsuarioDAO();
+		setListaUsuario(dao.getByNome(getFiltro()));
+	}
+	
 	public Perfil[] getListaPerfil() {
 		return Perfil.values();
 	}
@@ -106,6 +117,14 @@ public class UsuarioController implements Serializable {
 
 	public void setListaUsuario(List<Usuario> listaUsuario) {
 		this.listaUsuario = listaUsuario;
+	}
+
+	public String getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
 	}
 
 
